@@ -10,8 +10,8 @@ terraform {
 
   backend "s3" {
     region         = "us-east-1"
-    dynamodb_table = "tfstate-main-topherland"
-    bucket         = "tfstate-main-topherland"
+    dynamodb_table = "tfstate-lock"
+    bucket         = "tfstate-433680868508"
     key            = "topher.land"
     encrypt        = true
   }
