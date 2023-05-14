@@ -26,7 +26,7 @@
     "extends": "./configs/.eslintrc.cjs"
   },
   "scripts": {
-    "restore": "terraform -chdir=terraform init && lerna run restore --stream --concurrency=1",
+    "init": "terraform -chdir=terraform init && lerna run init --stream --concurrency=1",
     "build": "lerna run build --stream",
     "test": "eslint . && npm run build && vitest run --coverage --pass-with-no-tests && npm run plan",
     "release": "lerna publish from-package --no-git-tag-version --no-push --yes",

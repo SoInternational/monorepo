@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "topher.land",
+  "name": "sointernational.love",
   "type": "module",
   "scripts": {
     "init": "terraform -chdir=terraform init",

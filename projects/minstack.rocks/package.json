@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "topher.land",
+  "name": "minstack.rocks",
   "type": "module",
   "scripts": {
     "init": "terraform -chdir=terraform init",

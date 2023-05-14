@@ -41,7 +41,7 @@ jobs:
       - name: Restore
         run: |
           npm ci
-          npm run restore
+          npm run init
 
       - name: Build
         run: npm run build
