@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "init": "terraform -chdir=terraform init",
-    "plan": "terraform -chdir=terraform plan",
+    "plan": "terraform -chdir=terraform plan -lock=false -refresh=false",
     "deploy": "terraform -chdir=terraform apply -auto-approve"
   }
 }
