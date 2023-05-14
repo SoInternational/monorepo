@@ -1,0 +1,54 @@
+{
+  "name": "root",
+  "version": "1.0.0",
+  "description": "Topherland/monorepo",
+  "license": "CC0-1.0",
+  "main": "package.json",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "projects/*"
+  ],
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8",
+    "yarn": "please-use-npm",
+    "pnpm": "please-use-npm"
+  },
+  "engineStrict": true,
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 120,
+    "trailingComma": "all",
+    "endOfLine": "lf"
+  },
+  "eslintConfig": {
+    "extends": "./configs/.eslintrc.cjs"
+  },
+  "scripts": {
+    "restore": "terraform -chdir=terraform init && lerna run restore --stream --concurrency=1",
+    "build": "lerna run build --stream",
+    "test": "eslint . && npm run build && vitest run --coverage --pass-with-no-tests",
+    "release": "lerna publish from-package --no-git-tag-version --no-push --yes",
+    "plan": "terraform -chdir=terraform plan && lerna run plan --stream --concurrency=1",
+    "deploy": "terraform -chdir=terraform apply -auto-approve && lerna run deploy --stream --concurrency=1 --no-bail",
+    "modernize": "npx npm-check-updates -i --format group"
+  },
+  "devDependencies": {
+    "@lerna-lite/exec": "^2.3.0",
+    "@lerna-lite/publish": "^2.3.0",
+    "@lerna-lite/run": "^2.3.0",
+    "@rollup/plugin-typescript": "^11.1.1",
+    "@types/eslint": "^8.37.0",
+    "@types/node": "^20.1.3",
+    "@vitest/coverage-c8": "^0.31.0",
+    "eslint": "^8.40.0",
+    "eslint-config-rational": "^2.0.21",
+    "prettier": "^2.8.8",
+    "react": "^18.2.0",
+    "rollup": "^3.21.6",
+    "rollup-plugin-node-externals": "^6.0.0",
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.0"
+  }
+}

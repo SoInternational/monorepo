@@ -1,0 +1,47 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetPolicy",
+        "iam:GetPolicyVersion",
+        "iam:GetRole",
+        "iam:GetRolePolicy",
+        "iam:ListAttachedRolePolicies",
+        "iam:ListEntitiesForPolicy",
+        "iam:ListInstanceProfilesForRole",
+        "iam:ListPolicies",
+        "iam:ListPoliciesGrantingServiceAccess",
+        "iam:ListPolicyTags",
+        "iam:ListPolicyVersions",
+        "iam:ListRolePolicies",
+        "iam:ListRoleTags",
+        "iam:ListRoles",
+        "iam:SimulateCustomPolicy",
+        "acm:*",
+        "apigateway:*",
+        "cloudfront:*",
+        "dynamodb:*",
+        "lambda:*",
+        "logs:*",
+        "route53:*",
+        "s3:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": "iam:*",
+      "Resource": ["arn:aws:iam::433680868508:policy/*", "arn:aws:iam::433680868508:role/*"]
+    },
+    {
+      "Sid": "",
+      "Effect": "Deny",
+      "Action": "iam:*",
+      "Resource": ["arn:aws:iam::433680868508:policy/user_*", "arn:aws:iam::433680868508:role/user_*"]
+    }
+  ]
+}

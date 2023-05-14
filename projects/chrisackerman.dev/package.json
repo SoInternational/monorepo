@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "chrisackerman.dev",
+  "type": "module",
+  "scripts": {
+    "restore": "terraform -chdir=terraform init",
+    "plan": "terraform -chdir=terraform plan",
+    "deploy": "terraform -chdir=terraform apply -auto-approve"
+  }
+}
