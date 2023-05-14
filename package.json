@@ -28,7 +28,7 @@
   "scripts": {
     "restore": "terraform -chdir=terraform init && lerna run restore --stream --concurrency=1",
     "build": "lerna run build --stream",
-    "test": "eslint . && npm run build && vitest run --coverage --pass-with-no-tests",
+    "test": "eslint . && npm run build && vitest run --coverage --pass-with-no-tests && npm run plan",
     "release": "lerna publish from-package --no-git-tag-version --no-push --yes",
     "plan": "terraform -chdir=terraform plan && lerna run plan --stream --concurrency=1",
     "deploy": "terraform -chdir=terraform apply -auto-approve && lerna run deploy --stream --concurrency=1 --no-bail",

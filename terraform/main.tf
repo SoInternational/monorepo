@@ -26,5 +26,7 @@ module "zones" {
   zones = {
     "topher.land"          = {}
     "chrisackerman.dev"    = {}
+    "sointernational.love" = {}
+    "minstack.rocks"       = {}
   }
 }
