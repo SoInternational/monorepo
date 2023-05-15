@@ -77,8 +77,8 @@ module "dns" {
 }
 
 module "s3" {
-  source = "terraform-aws-modules/s3-bucket/aws"
-  bucket = "chrisackerman.dev"
+  source        = "terraform-aws-modules/s3-bucket/aws"
+  bucket        = "chrisackerman.dev"
 }
 
 resource "null_resource" "s3-sync" {
@@ -88,7 +88,7 @@ resource "null_resource" "s3-sync" {
   }
 }
 
-module "cdn" {
+module "cdn" { 
   source     = "../../../terraform/cdn"
   depends_on = [null_resource.s3-sync]
   zone_id    = data.aws_route53_zone.this.zone_id

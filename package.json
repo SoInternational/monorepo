@@ -2,7 +2,7 @@
   "name": "root",
   "version": "1.0.0",
   "description": "Topherland/monorepo",
-  "license": "CC0-1.0",
+  "license": "UNLICENSED",
   "main": "package.json",
   "type": "module",
   "workspaces": [

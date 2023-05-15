@@ -2,46 +2,54 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "",
+      "Sid": "AllowSafeFullAccess",
+      "Effect": "Allow",
+      "NotAction": ["iam:*", "organizations:*", "account:*"],
+      "Resource": ["*"]
+    },
+    {
+      "Sid": "AllowIAMScopedAccess",
       "Effect": "Allow",
       "Action": [
-        "iam:GetPolicy",
-        "iam:GetPolicyVersion",
-        "iam:GetRole",
-        "iam:GetRolePolicy",
-        "iam:ListAttachedRolePolicies",
-        "iam:ListEntitiesForPolicy",
-        "iam:ListInstanceProfilesForRole",
-        "iam:ListPolicies",
-        "iam:ListPoliciesGrantingServiceAccess",
-        "iam:ListPolicyTags",
-        "iam:ListPolicyVersions",
-        "iam:ListRolePolicies",
-        "iam:ListRoleTags",
-        "iam:ListRoles",
-        "iam:SimulateCustomPolicy",
-        "acm:*",
-        "apigateway:*",
-        "cloudfront:*",
-        "dynamodb:*",
-        "lambda:*",
-        "logs:*",
-        "route53:*",
-        "s3:*"
+        "iam:Get*",
+        "iam:List*",
+        "iam:Simulate*",
+        "iam:Generate*",
+        "iam:DeleteRole",
+        "iam:UpdateRole",
+        "iam:UpdateRoleDescription",
+        "iam:TagRole",
+        "iam:UntagRole",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:PutRolePolicy",
+        "iam:UpdateAssumeRolePolicy",
+        "iam:DeletePolicy",
+        "iam:DeletePolicyVersion",
+        "iam:CreatePolicy",
+        "iam:CreatePolicyVersion",
+        "iam:TagPolicy",
+        "iam:UntagPolicy"
       ],
-      "Resource": "*"
+      "Resource": ["arn:aws:iam::433680868508:policy/lambda*", "arn:aws:iam::433680868508:role/lambda*"]
     },
     {
-      "Sid": "",
+      "Sid": "AllowRoleCreationWithAttachedPermissionsBoundary",
       "Effect": "Allow",
-      "Action": "iam:*",
-      "Resource": ["arn:aws:iam::433680868508:policy/*", "arn:aws:iam::433680868508:role/*"]
+      "Action": ["iam:CreateRole"],
+      "Resource": ["arn:aws:iam::433680868508:role/lambda*"],
+      "Condition": {
+        "StringEquals": {
+          "iam:PermissionsBoundary": "arn:aws:iam::433680868508:policy/terraform-apply"
+        }
+      }
     },
     {
-      "Sid": "",
+      "Sid": "DenyModifyPermissionsBoundary",
       "Effect": "Deny",
-      "Action": "iam:*",
-      "Resource": ["arn:aws:iam::433680868508:policy/user_*", "arn:aws:iam::433680868508:role/user_*"]
+      "Action": ["iam:DeleteRolePermissionsBoundary", "iam:PutRolePermissionsBoundary"],
+      "Resource": ["*"]
     }
   ]
 }
