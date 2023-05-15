@@ -10,10 +10,15 @@ data "archive_file" "lambda" {
   output_path = ".terraform/temp/lambda/${var.name}.zip"
 }
 
+data "aws_iam_policy" "lambda" {
+  name = "permissions-boundary-svc"
+}
+
 module "lambda" {
   source                                  = "terraform-aws-modules/lambda/aws"
   function_name                           = var.name
-  role_name                               = "lambda_${var.name}"
+  role_name                               = "svc_lambda_${var.name}"
+  role_permissions_boundary               = data.aws_iam_policy.lambda.arn
   create_package                          = false
   local_existing_package                  = data.archive_file.lambda.output_path
   environment_variables                   = var.environment

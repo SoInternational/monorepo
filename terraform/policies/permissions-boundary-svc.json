@@ -1,0 +1,11 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowServiceAccess",
+      "Effect": "Allow",
+      "Action": ["logs:*", "s3:*", "dynamodb:*"],
+      "Resource": ["*"]
+    }
+  ]
+}

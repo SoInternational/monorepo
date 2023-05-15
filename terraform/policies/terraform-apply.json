@@ -2,19 +2,32 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "AllowSafeFullAccess",
+      "Sid": "AllowSelectedFullAccess",
       "Effect": "Allow",
-      "NotAction": ["iam:*", "organizations:*", "account:*"],
+      "Action": [
+        "cloudwatch:*",
+        "logs:*",
+        "route53:*",
+        "s3:*",
+        "dynamodb:*",
+        "rds:*",
+        "cloudfront:*",
+        "acm:*",
+        "lambda:*",
+        "apigateway:*"
+      ],
       "Resource": ["*"]
     },
     {
-      "Sid": "AllowIAMScopedAccess",
+      "Sid": "AllowIAMReadAccess",
+      "Effect": "Allow",
+      "Action": ["iam:Get*", "iam:List*", "iam:Simulate*", "iam:Generate*"],
+      "Resource": ["*"]
+    },
+    {
+      "Sid": "AllowIAMScopedWriteAccess",
       "Effect": "Allow",
       "Action": [
-        "iam:Get*",
-        "iam:List*",
-        "iam:Simulate*",
-        "iam:Generate*",
         "iam:DeleteRole",
         "iam:UpdateRole",
         "iam:UpdateRoleDescription",
@@ -32,21 +45,21 @@
         "iam:TagPolicy",
         "iam:UntagPolicy"
       ],
-      "Resource": ["arn:aws:iam::433680868508:policy/lambda*", "arn:aws:iam::433680868508:role/lambda*"]
+      "Resource": ["arn:aws:iam::433680868508:policy/svc*", "arn:aws:iam::433680868508:role/svc*"]
     },
     {
-      "Sid": "AllowRoleCreationWithAttachedPermissionsBoundary",
+      "Sid": "AllowIAMRoleCreationWithAttachedPermissionsBoundary",
       "Effect": "Allow",
       "Action": ["iam:CreateRole"],
-      "Resource": ["arn:aws:iam::433680868508:role/lambda*"],
+      "Resource": ["arn:aws:iam::433680868508:role/svc*"],
       "Condition": {
         "StringEquals": {
-          "iam:PermissionsBoundary": "arn:aws:iam::433680868508:policy/terraform-apply"
+          "iam:PermissionsBoundary": "arn:aws:iam::433680868508:policy/permissions-boundary-svc"
         }
       }
     },
     {
-      "Sid": "DenyModifyPermissionsBoundary",
+      "Sid": "DenyIAMModifyPermissionsBoundary",
       "Effect": "Deny",
       "Action": ["iam:DeleteRolePermissionsBoundary", "iam:PutRolePermissionsBoundary"],
       "Resource": ["*"]

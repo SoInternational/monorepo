@@ -18,7 +18,8 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region              = "us-east-1"
+  allowed_account_ids = [local.workspace.account_id]
 }
 
 data "aws_route53_zone" "this" {

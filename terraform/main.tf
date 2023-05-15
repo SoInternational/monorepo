@@ -18,7 +18,8 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region              = "us-east-1"
+  allowed_account_ids = [local.workspace.account_id]
 }
 
 module "zones" {
@@ -28,5 +29,8 @@ module "zones" {
     "chrisackerman.dev"    = {}
     "sointernational.love" = {}
     "minstack.rocks"       = {}
+    "largeturtle.com"      = {}
+    "chairlift7.com"       = {}
+    "chairliftseven.com"   = {}
   }
 }

@@ -18,7 +18,8 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region              = "us-east-1"
+  allowed_account_ids = [local.workspace.account_id]
 }
 
 data "aws_route53_zone" "this" {
@@ -77,22 +78,20 @@ module "dns" {
 }
 
 module "s3" {
-  source        = "terraform-aws-modules/s3-bucket/aws"
-  bucket        = "chrisackerman.dev"
+  source = "terraform-aws-modules/s3-bucket/aws"
+  bucket = "chrisackerman.dev"
 }
 
-resource "null_resource" "s3-sync" {
-  provisioner "local-exec" {
-    working_dir = path.module
-    command     = "aws s3 sync ../public s3://${module.s3.s3_bucket_id}"
-  }
+module "s3-sync" {
+  source     = "../../../terraform/modules/s3/sync"
+  source_dir = "${path.module}/../public"
+  bucket     = module.s3.s3_bucket_id
 }
 
-module "cdn" { 
-  source     = "../../../terraform/cdn"
-  depends_on = [null_resource.s3-sync]
-  zone_id    = data.aws_route53_zone.this.zone_id
-  domain     = "chrisackerman.dev"
-  aliases    = ["www.chrisackerman.dev"]
-  s3_bucket  = module.s3.s3_bucket_id
+module "cdn" {
+  source    = "../../../terraform/modules/cdn"
+  zone_id   = data.aws_route53_zone.this.zone_id
+  domain    = "chrisackerman.dev"
+  aliases   = ["www.chrisackerman.dev"]
+  s3_bucket = module.s3.s3_bucket_id
 }
