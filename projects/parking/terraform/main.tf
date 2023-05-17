@@ -17,6 +17,10 @@ terraform {
   }
 }
 
+locals {
+  workspace = jsondecode(file("${path.module}/workspace-${terraform.workspace}.json"))
+}
+
 provider "aws" {
   region              = "us-east-1"
   allowed_account_ids = [local.workspace.account_id]

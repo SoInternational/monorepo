@@ -17,6 +17,10 @@ terraform {
   }
 }
 
+locals {
+  workspace = jsondecode(file("${path.module}/workspace-${terraform.workspace}.json"))
+}
+
 provider "aws" {
   region              = "us-east-1"
   allowed_account_ids = [local.workspace.account_id]
@@ -29,5 +33,5 @@ data "aws_route53_zone" "this" {
 module "dns" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   zone_id = data.aws_route53_zone.this.zone_id
-  records = [for record in local.workspace.records : merge({ ttl = 300 }, record)]
+  records = [for record in local.workspace.dns : merge({ ttl = 300 }, record)]
 }
