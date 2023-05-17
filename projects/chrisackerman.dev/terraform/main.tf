@@ -23,75 +23,11 @@ provider "aws" {
 }
 
 data "aws_route53_zone" "this" {
-  name = "chrisackerman.dev"
+  name = local.workspace.zone
 }
 
 module "dns" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   zone_id = data.aws_route53_zone.this.zone_id
-  records = [
-    {
-      type    = "CNAME"
-      name    = "protonmail._domainkey"
-      records = ["protonmail.domainkey.din4xz4fokjkq7j66kmoysdksrigfv5dmjolduuoey777ly2vl3ra.domains.proton.ch."]
-      ttl     = 300
-    },
-    {
-      type    = "CNAME"
-      name    = "protonmail2._domainkey"
-      records = ["protonmail2.domainkey.din4xz4fokjkq7j66kmoysdksrigfv5dmjolduuoey777ly2vl3ra.domains.proton.ch."]
-      ttl     = 300
-    },
-    {
-      type    = "CNAME"
-      name    = "protonmail3._domainkey"
-      records = ["protonmail3.domainkey.din4xz4fokjkq7j66kmoysdksrigfv5dmjolduuoey777ly2vl3ra.domains.proton.ch."]
-      ttl     = 300
-    },
-    {
-      type = "TXT"
-      name = ""
-      records = [
-        "protonmail-verification=08d9654eb36271ac7815495470ef5f3a08723cf1",
-        "v=spf1 include:_spf.protonmail.ch mx ~all"
-      ]
-      ttl = 300
-    },
-    {
-      type = "TXT"
-      name = "_dmarc"
-      records = [
-        "v=DMARC1; p=none; rua=mailto:dmarc@topher.land"
-      ]
-      ttl = 300
-    },
-    {
-      type = "MX"
-      name = ""
-      records = [
-        "10 mail.protonmail.ch.",
-        "20 mailsec.protonmail.ch."
-      ]
-      ttl = 300
-    }
-  ]
-}
-
-module "s3" {
-  source = "terraform-aws-modules/s3-bucket/aws"
-  bucket = "chrisackerman.dev"
-}
-
-module "s3-sync" {
-  source     = "../../../terraform/modules/s3/sync"
-  source_dir = "${path.module}/../public"
-  bucket     = module.s3.s3_bucket_id
-}
-
-module "cdn" {
-  source    = "../../../terraform/modules/cdn"
-  zone_id   = data.aws_route53_zone.this.zone_id
-  domain    = "chrisackerman.dev"
-  aliases   = ["www.chrisackerman.dev"]
-  s3_bucket = module.s3.s3_bucket_id
+  records = [for record in local.workspace.records : merge({ ttl = 300 }, record)]
 }

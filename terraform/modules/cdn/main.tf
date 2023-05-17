@@ -10,6 +10,7 @@ module "acm" {
   domain_name               = var.domain
   subject_alternative_names = var.aliases
   wait_for_validation       = true
+  tags                      = { Name = var.name }
 }
 
 resource "aws_cloudfront_cache_policy" "this" {
@@ -17,7 +18,7 @@ resource "aws_cloudfront_cache_policy" "this" {
     mutable   = 0
     immutable = 63072000
   }
-  name        = "${each.key}_${replace(var.domain, "/\\W/", "-")}"
+  name        = "${var.name}__${each.key}"
   min_ttl     = 0
   default_ttl = each.value
   max_ttl     = 63072000
@@ -41,7 +42,7 @@ resource "aws_cloudfront_response_headers_policy" "this" {
     mutable   = "max-age=0"
     immutable = "max-age=63072000, immutable"
   }
-  name = "${each.key}_${replace(var.domain, "/\\W/", "-")}"
+  name = "${var.name}__${each.key}"
   custom_headers_config {
     items {
       header   = "cache-control"
@@ -81,7 +82,7 @@ resource "aws_cloudfront_response_headers_policy" "this" {
 
 module "cloudfront" {
   source              = "terraform-aws-modules/cloudfront/aws"
-  comment             = "Domain: ${var.domain}"
+  comment             = var.name
   aliases             = concat([var.domain], var.aliases)
   default_root_object = "index.html"
   price_class         = "PriceClass_100"
@@ -94,7 +95,7 @@ module "cloudfront" {
   }
   create_origin_access_control = true
   origin_access_control = {
-    s3_oac = {
+    "${var.name}__s3_oac" = {
       description      = "CloudFront access to S3"
       origin_type      = "s3"
       signing_behavior = "always"
@@ -104,7 +105,7 @@ module "cloudfront" {
   origin = {
     primary = {
       domain_name           = local.s3_bucket_regional_domain
-      origin_access_control = "s3_oac"
+      origin_access_control = "${var.name}__s3_oac"
     }
   }
   default_cache_behavior = {
@@ -156,27 +157,4 @@ module "dns" {
       zone_id = module.cloudfront.cloudfront_distribution_hosted_zone_id
     }
   }]
-}
-
-resource "aws_s3_bucket_policy" "this" {
-  bucket = local.s3_bucket
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = ""
-        Effect = "Allow"
-        Principal = {
-          Service = "cloudfront.amazonaws.com"
-        }
-        Action   = "s3:GetObject"
-        Resource = "${local.s3_bucket_arn}/*"
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" : module.cloudfront.cloudfront_distribution_arn
-          }
-        }
-      }
-    ]
-  })
 }

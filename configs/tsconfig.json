@@ -2,8 +2,8 @@
   "compilerOptions": {
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "target": "ESNext",
+    "lib": ["ESNext"],
     "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
@@ -19,5 +19,6 @@
     "allowJs": true,
     "noEmit": true
   },
-  "exclude": ["node_modules", "out", "lib"]
+  "exclude": ["node_modules", "out", "lib"],
+  "include": ["**/*"]
 }

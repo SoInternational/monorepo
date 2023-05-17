@@ -24,13 +24,5 @@ provider "aws" {
 
 module "zones" {
   source = "terraform-aws-modules/route53/aws//modules/zones"
-  zones = {
-    "topher.land"          = {}
-    "chrisackerman.dev"    = {}
-    "sointernational.love" = {}
-    "minstack.rocks"       = {}
-    "largeturtle.com"      = {}
-    "chairlift7.com"       = {}
-    "chairliftseven.com"   = {}
-  }
+  zones  = { for zone in local.workspace.zones : zone => {} }
 }

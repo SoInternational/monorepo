@@ -1,3 +1,39 @@
 {
-  "account_id": "433680868508"
+  "account_id": "433680868508",
+  "zone": "chrisackerman.dev",
+  "dns": [
+    {
+      "type": "CNAME",
+      "name": "protonmail._domainkey",
+      "records": ["protonmail.domainkey.din4xz4fokjkq7j66kmoysdksrigfv5dmjolduuoey777ly2vl3ra.domains.proton.ch."]
+    },
+    {
+      "type": "CNAME",
+      "name": "protonmail2._domainkey",
+      "records": ["protonmail2.domainkey.din4xz4fokjkq7j66kmoysdksrigfv5dmjolduuoey777ly2vl3ra.domains.proton.ch."]
+    },
+    {
+      "type": "CNAME",
+      "name": "protonmail3._domainkey",
+      "records": ["protonmail3.domainkey.din4xz4fokjkq7j66kmoysdksrigfv5dmjolduuoey777ly2vl3ra.domains.proton.ch."]
+    },
+    {
+      "type": "TXT",
+      "name": "",
+      "records": [
+        "protonmail-verification=08d9654eb36271ac7815495470ef5f3a08723cf1",
+        "v=spf1 include:_spf.protonmail.ch mx ~all"
+      ]
+    },
+    {
+      "type": "TXT",
+      "name": "_dmarc",
+      "records": ["v=DMARC1; p=none; rua=mailto:dmarc@topher.land"]
+    },
+    {
+      "type": "MX",
+      "name": "",
+      "records": ["10 mail.protonmail.ch.", "20 mailsec.protonmail.ch."]
+    }
+  ]
 }
